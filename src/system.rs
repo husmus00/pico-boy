@@ -17,13 +17,13 @@ pub struct System {
 }
 
 // Represents the possible values of r8 for certain instructions
-static R8: [Reg8; 8] = [B, C, D, E, H, L, H /* <- No. 6 (7th pos) is a placeholder */, A]; // 6 is [hl] and handled by the function
+pub static R8: [Reg8; 8] = [B, C, D, E, H, L, H /* <- No. 6 (7th pos) is a placeholder */, A]; // 6 is [hl] and handled by the function
 
 // Represents the possible values of r16 for certain instructions
-static R16: [Reg16; 4] = [BC, DE, HL, SP];
+pub static R16: [Reg16; 4] = [BC, DE, HL, SP];
 
 // Represents the possible values of r16mem for certain instructions
-static R16MEM: [Reg16; 4] = [BC, DE, HL, HL]; // HL is duplicated because HL+, HL-
+pub static R16MEM: [Reg16; 4] = [BC, DE, HL, HL]; // HL is duplicated because HL+, HL-
 
 // type OpcodeFunction = fn(&System, u8);
 //
@@ -301,6 +301,15 @@ mod tests {
         assert_eq!(s.reg.get_flag(Carry), 1);
     }
 
+
+    #[test]
+    fn test_ld_r8_r8() {
+        let mut s = System::new();
+        s.reg.set8(A, 0b11110000);
+        s.execute_op(0b01000111); // ld b, a
+        assert_eq!(s.reg.get8(B), 0b11110000);
+    }
+
     #[test]
     fn test_rrca() {
         let mut s = System::new();
@@ -309,13 +318,5 @@ mod tests {
         // Ensure that reg a was rotated right and carry was set to 0
         assert_eq!(s.reg.get8(A), 0b01111000);
         assert_eq!(s.reg.get_flag(Carry), 0);
-    }
-
-    #[test]
-    fn test_ld_r8_r8() {
-        let mut s = System::new();
-        s.reg.set8(A, 0b11110000);
-        s.execute_op(0b01000111); // ld b, a
-        assert_eq!(s.reg.get8(B), 0b11110000);
     }
 }

@@ -1,9 +1,9 @@
-use system::System;
+use std::collections::HashMap;
+use crate::system::System;
 use crate::registers::{Reg16, Reg8};
 use crate::registers::Flag::{Carry, HalfCarry, Sub, Zero};
 use crate::registers::Reg16::{HL, SP};
 use crate::registers::Reg8::A;
-use crate::system;
 
 impl System {
     ///
